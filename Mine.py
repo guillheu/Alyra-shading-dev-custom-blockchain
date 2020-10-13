@@ -15,11 +15,3 @@ def mine(block):
 
         #displaying the current hash of the block (only for convenience sake, should not be implemented in production for performance concerns)
         print(block.hash)
-
-
-
-
-
-
-#testing a new empty block
-mine(Block(1, "", "", ""))
