@@ -24,7 +24,7 @@ class Block:
 
 
     def toJson(self):
-        return "{\"index\":" + str(self.index) + ",\"prevHash\":\"" + self.prevHash + "\",\"data\":" + json.dumps(self.data) + ",\"timestamp\":" + str(self.timestamp) + ",\"salt\":" + str(self.salt) + "}"
+        return "{\"index\":" + str(self.index) + ",\"prevHash\":\"" + self.prevHash + "\",\"data\":" + json.dumps(self.data) + ",\"timestamp\":" + str(self.timestamp) + ",\"salt\":\"" + hex(self.salt) + "\"}"
 
         #To be implemented
     @property

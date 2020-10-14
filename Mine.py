@@ -1,7 +1,7 @@
 from Block import *
 
 #for a better difficulty granularity, we can retreive the hash as a binary value instead of a hex value
-target = "00000"
+target = "0000"
 
 #this function will keep incrementing the salt/nonce of the block until we get the right hash
 def mine(block):
@@ -14,4 +14,4 @@ def mine(block):
         block.salt+=1
 
         #displaying the current hash of the block (only for convenience sake, should not be implemented in production for performance concerns)
-        print(block.hash)
+        #print(block.hash)

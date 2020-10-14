@@ -9,12 +9,16 @@ class Blockchain:
 
 
 
-    def __init__(self):
+    def __init__(self, blockchainFile):
         """
         Constructor for the `Blockchain` class.
         """
         self.chain = []
-        self.create_genesis_block()
+        try:
+            self.loadFromJson(blockchainFile)
+        except Exception as e:
+            print("Failed to load " + blockchainFile + " : " + str(e))
+            self.create_genesis_block()
 
 
     def create_genesis_block(self):
@@ -45,6 +49,13 @@ class Blockchain:
 
             #Json methods
 
+    def fromJson(self, jsonString):
+        for blkTmpl in json.loads(jsonString):
+            print(blkTmpl)
+            tmp = Block(blkTmpl['index'], blkTmpl['prevHash'], blkTmpl['data'], blkTmpl['timestamp'])
+            tmp.salt = blkTmpl['salt']
+            self.add(tmp)
+
     def toJson(self):
         r = "["
         for block in self.chain:
@@ -55,6 +66,9 @@ class Blockchain:
         return "".join(r)
 
 
-    def saveToJson(self):
-        with open('Blockchain.json', 'w') as blkchn_file:
+    def saveToJson(self, outputFile):
+        with open(outputFile, 'w') as blkchn_file:
             blkchn_file.write(self.toJson())
+
+    def loadFromJson(self, inputFile):
+        self.fromJson(open(inputFile, 'r').read())

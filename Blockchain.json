@@ -1,1 +1,26 @@
-[{"index":0,"prevHash":"","data":{"come from": "Nice", "manual needed": false, "name": "Brice", "king of": "La Glisse", "Other surfaces": "Le roi de la Casse", "surfer": "Winner", "ascendant": "Snowboarder"},"timestamp":0,"salt":0}]
+[
+  {
+    "index": 0,
+    "prevHash": "",
+    "data": {
+      "come from": "Nice",
+      "manual needed": false,
+      "name": "Brice",
+      "king of": "La Glisse",
+      "Other surfaces": "Le roi de la Casse",
+      "surfer": "Winner",
+      "ascendant": "Snowboarder"
+    },
+    "timestamp": 0,
+    "salt": "0x0"
+  },
+  {
+    "index": 1,
+    "prevHash": "c83bd4b4c849378698cd0effe2b451bade0f99429a8266115df305a6ccaa04d6",
+    "data": [
+      "a block content"
+    ],
+    "timestamp": 1602684240.99,
+    "salt": "0x4a40"
+  }
+]
