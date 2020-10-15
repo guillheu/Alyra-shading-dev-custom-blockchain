@@ -28,3 +28,7 @@ class Block:
     @property
     def isCorrect(self):
         return True
+
+    @property
+    def prettyJson(self):
+        return self.toJson()

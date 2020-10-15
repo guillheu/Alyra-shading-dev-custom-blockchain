@@ -65,3 +65,9 @@ class Blockchain:
 
     def loadFromJson(self, inputFile):
         self.fromJson(open(inputFile, 'r').read())
+
+
+        #Doesnt work properly. Blocks themselves arent prettified
+    @property
+    def prettyJson(self):
+        self.toJson().dumps(parsed, indent=4)

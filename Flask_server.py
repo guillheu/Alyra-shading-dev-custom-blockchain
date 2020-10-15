@@ -21,21 +21,33 @@ def getBlock(index):
     except:
         return "could not find block with index \"" + index + "\"\nEither this is not a valid integer, or the index is negative, or that block index has not been added to the chain yet.", 404
 
-@app.route('/new_message', methods=['POST'])
+@app.route('/new_message', methods=['POST', 'GET'])
 def addMessage():
-    if not request.json:
-        return "bad request, no json", 400
-    if not 'message' in request.json:
-        return "bad request, no message field", 400
-
-    new_block = Block(len(blockchain.chain), blockchain.last_block.hash, request.json['message'], time.time())
-    mine(new_block)
-    blockchain.add(new_block)
-    blockchain.saveToJson(BCFile)
+    if request.method=='POST':
+        if not request.json:
+            print(request.form)
+            for key, value in request.form.items():
+                print("key: {0}, value: {1}".format(key, value))
+            msg = request.form["message"]
 
 
-    return "Thank you, your message \"" + json.dumps(request.json["message"]) + "\" has been successfully mined and added to the Blockchain!"
 
+        elif not 'message' in request.json:
+            return "bad request, no message field", 400
+
+        else:
+            msg = request.json['message']
+        new_block = Block(len(blockchain.chain), blockchain.last_block.hash, msg, time.time())
+        mine(new_block)
+        blockchain.add(new_block)
+        blockchain.saveToJson(BCFile)
+        return "Thank you, your message \"" + json.dumps(msg) + "\" has been successfully mined and added to the Blockchain!"
+    return """
+  <form action="/new_message" method="post">
+    <input type="text" name="message"/>
+    <input type="submit" value="Send your message"/>
+    </form>
+        """
 
 
 app.run()
