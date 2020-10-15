@@ -6,9 +6,7 @@ from json import JSONEncoder
 
 class Block:
     def __init__(self, index, prevHash, data, timestamp):
-        """
-        Constructor for the 'Block' class
-        """
+
 
         self.index = index
         self.prevHash = prevHash

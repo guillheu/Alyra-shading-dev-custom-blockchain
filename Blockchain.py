@@ -22,7 +22,7 @@ class Blockchain:
     def create_genesis_block(self):
 
         genesis_block = Block(0, "", {"name":"Brice","come from":"Nice","surfer":"Winner","ascendant":"Snowboarder","king of":"La Glisse","manual needed":False,"Other surfaces":"Le roi de la Casse"}, "0")
-        genesis_block.hash = genesis_block.hash
+        #genesis_block.hash = genesis_block.hash
         self.add(genesis_block)
 
     @property
@@ -47,7 +47,7 @@ class Blockchain:
         for blkTmpl in json.loads(jsonString):
             print(blkTmpl)
             tmp = Block(blkTmpl['index'], blkTmpl['prevHash'], blkTmpl['data'], blkTmpl['timestamp'])
-            tmp.salt = blkTmpl['salt']
+            tmp.salt = int(blkTmpl['salt'], 16)
             self.add(tmp)
 
     def toJson(self):
