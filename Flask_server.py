@@ -31,7 +31,7 @@ def addMessage():
     new_block = Block(len(blockchain.chain), blockchain.last_block.hash, request.json['message'], time.time())
     mine(new_block)
     blockchain.add(new_block)
-    blockchain.saveToJson()
+    blockchain.saveToJson(BCFile)
 
 
     return "Thank you, your message \"" + request.json["message"] + "\" has been successfully mined and added to the Blockchain!"
