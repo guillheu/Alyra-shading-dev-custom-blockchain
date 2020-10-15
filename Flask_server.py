@@ -1,19 +1,18 @@
 import json
 from flask import Flask, request
 import requests
+from Blockchain import *
+from Block import *
 
+BCFile = "Blockchain.json"
 
-
-list_content=[]
 app = Flask(__name__)
-
+blockchain = Blockchain(BCFile)
 
 @app.route('/')
 def index():
-    return str(list_content)
+    return str(blockchain.toJson())
 
-def set_list_content(list_cntnt):
-    list_content = list_cntnt
 
-def start_server():
-    app.run()
+
+app.run()
