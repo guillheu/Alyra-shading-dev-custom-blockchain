@@ -34,7 +34,7 @@ def addMessage():
     blockchain.saveToJson(BCFile)
 
 
-    return "Thank you, your message \"" + request.json["message"] + "\" has been successfully mined and added to the Blockchain!"
+    return "Thank you, your message \"" + json.dumps(request.json["message"]) + "\" has been successfully mined and added to the Blockchain!"
 
 
 
