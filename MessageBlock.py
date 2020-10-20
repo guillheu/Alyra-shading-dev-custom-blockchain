@@ -4,7 +4,7 @@ import time
 from json import JSONEncoder
 
 
-class Block:
+class MessageBlock:
     def __init__(self, index, prevHash, data, timestamp):
 
 

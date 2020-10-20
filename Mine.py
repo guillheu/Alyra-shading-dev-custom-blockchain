@@ -1,4 +1,4 @@
-from Block import *
+from MessageBlock import *
 
 #for a better difficulty granularity, we can retreive the hash as a binary value instead of a hex value
 target = "0000"

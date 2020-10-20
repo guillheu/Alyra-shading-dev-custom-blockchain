@@ -1,11 +1,11 @@
-from Block import *
+from MessageBlock import *
 from json import JSONEncoder
 import json
 
 #Shamelessly copy-pasted from https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/
 
 
-class Blockchain:
+class MessageBlockchain:
 
 
 
@@ -21,8 +21,7 @@ class Blockchain:
 
     def create_genesis_block(self):
 
-        genesis_block = Block(0, "", {"name":"Brice","come from":"Nice","surfer":"Winner","ascendant":"Snowboarder","king of":"La Glisse","manual needed":False,"Other surfaces":"Le roi de la Casse"}, "0")
-        #genesis_block.hash = genesis_block.hash
+        genesis_block = MessageBlock(0, "", {"name":"Brice","come from":"Nice","surfer":"Winner","ascendant":"Snowboarder","king of":"La Glisse","manual needed":False,"Other surfaces":"Le roi de la Casse"}, "0")
         self.add(genesis_block)
 
     @property
@@ -45,7 +44,7 @@ class Blockchain:
     def fromJson(self, jsonString):
         for blkTmpl in json.loads(jsonString):
             print(blkTmpl)
-            tmp = Block(blkTmpl['index'], blkTmpl['prevHash'], blkTmpl['data'], blkTmpl['timestamp'])
+            tmp = MessageBlock(blkTmpl['index'], blkTmpl['prevHash'], blkTmpl['data'], blkTmpl['timestamp'])
             tmp.salt = int(blkTmpl['salt'], 16)
             self.add(tmp)
 

@@ -1,46 +1,40 @@
 import json
 from flask import Flask, request
 import requests
-from Blockchain import *
-from Block import *
+from MessageBlockchain import *
+from MessageBlock import *
 from Mine import *
 
 BCFile = "Blockchain.json"
+# Contains the host addresses of other participating members of the network
+peers = set()
 
 app = Flask(__name__)
-blockchain = Blockchain(BCFile)
+messageBlockchain = MessageBlockchain(BCFile)
 
 
 @app.route('/', methods=['GET'])
 def index():
-    return str(blockchain.toJson())
+    return str(messageBlockchain.toJson())
 @app.route('/block/<index>', methods=["GET"])
 def getBlock(index):
     try:
-        return blockchain.chain[int(index)].toJson()
+        return messageBlockchain.chain[int(index)].toJson()
     except:
-        return "could not find block with index \"" + index + "\"\nEither this is not a valid integer, or the index is negative, or that block index has not been added to the chain yet.", 404
+        return "could not find MessageBlock with index \"" + index + "\"\nEither this is not a valid integer, or the index is negative, or that block index has not been added to the chain yet.", 404
 
 @app.route('/new_message', methods=['POST', 'GET'])
 def addMessage():
     if request.method=='POST':
-        if not request.json:
-            print(request.form)
-            for key, value in request.form.items():
-                print("key: {0}, value: {1}".format(key, value))
-            msg = request.form["message"]
+        for key, value in request.form.items():
+            print("key: {0}, value: {1}".format(key, value))
+        msg = request.form["message"]
 
 
-
-        elif not 'message' in request.json:
-            return "bad request, no message field", 400
-
-        else:
-            msg = request.json['message']
-        new_block = Block(len(blockchain.chain), blockchain.last_block.hash, msg, time.time())
+        new_block = MessageBlock(len(messageBlockchain.chain), messageBlockchain.last_block.hash, msg, time.time())
         mine(new_block)
-        blockchain.add(new_block)
-        blockchain.saveToJson(BCFile)
+        messageBlockchain.add(new_block)
+        messageBlockchain.saveToJson(BCFile)
         return "Thank you, your message \"" + json.dumps(msg) + "\" has been successfully mined and added to the Blockchain!"
     return """
   <form action="/new_message" method="post">
@@ -48,6 +42,39 @@ def addMessage():
     <input type="submit" value="Send your message"/>
     </form>
         """
+
+
+###Consensus functions
+
+# Endpoint to add new peers to the network
+@app.route('/register_node', methods=['POST'])
+def register_new_peers():
+    # The host address to the peer node
+    node_address = request.json["node_address"]
+    if not node_address:
+        return "Invalid data", 400
+
+    # Add the node to the peer list
+    peers.add(node_address)
+
+    # Return the blockchain to the newly registered node so that it can sync
+    return messageBlockchain.toJson()
+
+def retreive_peers_chain():
+    for node in peers:
+        response = requests.get(node)
+        length = response.json()['length']
+        chain = response.json()['chain']
+        if length > current_len and messageBlockchain.check_chain_validity(chain):
+              # Longer valid chain found!
+            current_len = length
+            longest_chain = chain
+
+
+
+
+
+
 
 
 app.run()
