@@ -3,7 +3,7 @@ from flask import Flask, request
 import requests
 from MessageBlockchain import *
 from MessageBlock import *
-from Mine import *
+from MessageMine import *
 
 BCFile = "Blockchain.json"
 # Contains the host addresses of other participating members of the network
