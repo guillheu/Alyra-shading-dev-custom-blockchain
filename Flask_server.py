@@ -16,6 +16,9 @@ messageBlockchain = MessageBlockchain(BCFile)
 @app.route('/', methods=['GET'])
 def index():
     return str(messageBlockchain.toJson())
+
+
+
 @app.route('/block/<index>', methods=["GET"])
 def getBlock(index):
     try:
@@ -29,15 +32,17 @@ def addMessage():
         for key, value in request.form.items():
             print("key: {0}, value: {1}".format(key, value))
         msg = request.form["message"]
+        author = request.form["author"]
 
 
-        new_block = MessageBlock(len(messageBlockchain.chain), messageBlockchain.last_block.hash, msg, time.time())
+        new_block = MessageBlock(messageBlockchain.last_block.hash, author, msg, time.time())
         mine(new_block)
         messageBlockchain.add(new_block)
         messageBlockchain.saveToJson(BCFile)
-        return "Thank you, your message \"" + json.dumps(msg) + "\" has been successfully mined and added to the Blockchain!"
+        return "Thank you "+author+", your message \"" + msg + "\" has been successfully mined and added to the Blockchain!"
     return """
   <form action="/new_message" method="post">
+    <input type="text" name="author"/>
     <input type="text" name="message"/>
     <input type="submit" value="Send your message"/>
     </form>

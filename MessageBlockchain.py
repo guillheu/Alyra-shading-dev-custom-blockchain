@@ -21,7 +21,7 @@ class MessageBlockchain:
 
     def create_genesis_block(self):
 
-        genesis_block = MessageBlock(0, "", {"name":"Brice","come from":"Nice","surfer":"Winner","ascendant":"Snowboarder","king of":"La Glisse","manual needed":False,"Other surfaces":"Le roi de la Casse"}, "0")
+        genesis_block = MessageBlock("", "admin", "This is the beginning of this conversation !", time.time())
         self.add(genesis_block)
 
     @property
@@ -44,8 +44,8 @@ class MessageBlockchain:
     def fromJson(self, jsonString):
         for blkTmpl in json.loads(jsonString):
             print(blkTmpl)
-            tmp = MessageBlock(blkTmpl['index'], blkTmpl['prevHash'], blkTmpl['data'], blkTmpl['timestamp'])
-            tmp.salt = int(blkTmpl['salt'], 16)
+            tmp = MessageBlock(blkTmpl['prevHash'], blkTmpl['author'], blkTmpl['message'], blkTmpl['timestamp'])
+            tmp.nonce = int(blkTmpl['nonce'], 16)
             self.add(tmp)
 
     def toJson(self):

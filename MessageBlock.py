@@ -5,14 +5,14 @@ from json import JSONEncoder
 
 
 class MessageBlock:
-    def __init__(self, index, prevHash, data, timestamp):
+    def __init__(self, prevHash, author, message, timestamp):
 
 
-        self.index = index
         self.prevHash = prevHash
-        self.data = data
+        self.author = author
+        self.message = message
         self.timestamp = timestamp
-        self.salt = 0
+        self.nonce = 0
 
     @property
     def hash(self):
@@ -22,7 +22,7 @@ class MessageBlock:
 
 
     def toJson(self):
-        return "{\"index\":" + str(self.index) + ",\"prevHash\":\"" + self.prevHash + "\",\"data\":" + json.dumps(self.data) + ",\"timestamp\":" + str(self.timestamp) + ",\"salt\":\"" + hex(self.salt) + "\"}"
+        return "{\"prevHash\":\"" + self.prevHash + "\", \"author\":\"" + self.author + "\",\"message\":" + json.dumps(self.message) + ",\"timestamp\":" + str(self.timestamp) + ",\"nonce\":\"" + hex(self.nonce) + "\"}"
 
         #To be implemented
     @property
