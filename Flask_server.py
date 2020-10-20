@@ -11,6 +11,9 @@ from ConfigHandler import *
 msgBCFile = getConfigVar('MessageBlockchainFile')
 localPort = getConfigVar("Port")
 hostAddress = getConfigVar('HostAddress')
+HTMLFolder = "html/"
+HTMLBlockchainSymbol = "[BLOCKCHAIN]"
+HTMLBlockSymbol = "[BLOCK]"
 
 
 # Contains the host addresses of other participating members of the network
@@ -22,16 +25,22 @@ messageBlockchain = MessageBlockchain(msgBCFile)
 
 @app.route('/', methods=['GET'])
 def index():
+    with open(HTMLFolder+"index.html", 'r') as f:
+        return f.read().replace(HTMLBlockchainSymbol, str(messageBlockchain.toJson()))
     return str(messageBlockchain.toJson())
 
 
 
-@app.route('/block/<index>', methods=["GET"])
-def getBlock(index):
+@app.route('/block', methods=["GET"])
+def getBlock():
     try:
-        return messageBlockchain.chain[int(index)].toJson()
+        index = request.args["index"]
+        print(index)
+        b = messageBlockchain.chain[int(index)].toJson()
+        with open(HTMLFolder + "block.html") as f:
+            return f.read().replace(HTMLBlockSymbol, b)
     except:
-        return "could not find MessageBlock with index \"" + index + "\"\nEither this is not a valid integer, or the index is negative, or that block index has not been added to the chain yet.", 404
+        return "Block not found", 404
 
 @app.route('/new_message', methods=['POST', 'GET'])
 def addMessage():
@@ -46,14 +55,12 @@ def addMessage():
         mine(new_block)
         messageBlockchain.add(new_block)
         messageBlockchain.saveToJson(msgBCFile)
-        return "Thank you "+author+", your message \"" + msg + "\" has been successfully mined and added to the Blockchain!"
-    return """
-  <form action="/new_message" method="post">
-    <input type="text" name="author"/>
-    <input type="text" name="message"/>
-    <input type="submit" value="Send your message"/>
-    </form>
-        """
+        with open(HTMLFolder + "new_message_success.html") as f:
+            return f.read().replace(HTMLBlockSymbol, messageBlockchain.last_block.toJson())
+        return new_block.toJson()
+    with open(HTMLFolder + "new_message_form.html") as f:
+        return f.read()
+    return "internal error", 500
 
 
 ###Consensus functions
