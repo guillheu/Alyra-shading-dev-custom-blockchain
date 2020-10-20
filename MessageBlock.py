@@ -2,6 +2,7 @@ from hashlib import sha256
 import json
 import time
 from json import JSONEncoder
+from ConfigHandler import *
 
 
 class MessageBlock:

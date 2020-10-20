@@ -1,7 +1,8 @@
 from MessageBlock import *
+from ConfigHandler import *
 
 #for a better difficulty granularity, we can retreive the hash as a binary value instead of a hex value
-target = "0000"
+target = getConfigVar("Target")
 
 #this function will keep incrementing the nonce of the block until we get the right hash
 def mine(block):

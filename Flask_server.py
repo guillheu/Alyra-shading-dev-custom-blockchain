@@ -4,13 +4,20 @@ import requests
 from MessageBlockchain import *
 from MessageBlock import *
 from MessageMine import *
+from ConfigHandler import *
 
-BCFile = "Blockchain.json"
+
+
+msgBCFile = getConfigVar('MessageBlockchainFile')
+localPort = getConfigVar("Port")
+hostAddress = getConfigVar('HostAddress')
+
+
 # Contains the host addresses of other participating members of the network
 peers = set()
 
 app = Flask(__name__)
-messageBlockchain = MessageBlockchain(BCFile)
+messageBlockchain = MessageBlockchain(msgBCFile)
 
 
 @app.route('/', methods=['GET'])
@@ -38,7 +45,7 @@ def addMessage():
         new_block = MessageBlock(messageBlockchain.last_block.hash, author, msg, time.time())
         mine(new_block)
         messageBlockchain.add(new_block)
-        messageBlockchain.saveToJson(BCFile)
+        messageBlockchain.saveToJson(msgBCFile)
         return "Thank you "+author+", your message \"" + msg + "\" has been successfully mined and added to the Blockchain!"
     return """
   <form action="/new_message" method="post">
@@ -82,4 +89,4 @@ def retreive_peers_chain():
 
 
 
-app.run()
+app.run(host=hostAddress, port=localPort)

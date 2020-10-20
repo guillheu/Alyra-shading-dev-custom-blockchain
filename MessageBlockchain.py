@@ -1,14 +1,12 @@
 from MessageBlock import *
 from json import JSONEncoder
 import json
+from ConfigHandler import *
 
 #Shamelessly copy-pasted from https://developer.ibm.com/technologies/blockchain/tutorials/develop-a-blockchain-application-from-scratch-in-python/
 
 
 class MessageBlockchain:
-
-
-
     def __init__(self, blockchainFile):
 
         self.chain = []
